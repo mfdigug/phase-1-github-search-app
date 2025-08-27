@@ -10,7 +10,14 @@ form.addEventListener('submit', (e) => {
 
 function handleSearchInput(e){
    const searchTerm = e.target.search.value;
-   fetch(`https://api.github.com/search/users?q=${searchTerm}`) //should I put a header here?
+   fetch(`https://api.github.com/search/users?q=${searchTerm}`, {
+    method: 'GET',
+    headers: {
+        'Content-Type' : 'application/json',
+        'Accept' : 'application/vnd.github.v3+json'
+    }
+   }) 
+   //should I put a header here?
    // custom accept for v3 of code - add to fetch header
    // Accept: application/vnd.github.v3+json
     .then(res => res.json())
@@ -38,15 +45,13 @@ function displayUserProfiles(user){
     
     // STEP 3: Clicking on one of these users should send a request to the User Repos Endpoint and return data about all the repositories for that user.
     userProfile.addEventListener('click', (e) => {
-        handleProfileClick(e)
+        handleProfileClick(e, user)
     })
 
     function handleProfileClick(e){
-        const clickedProfile = e.target.parentNode
-        console.log(clickedProfile)
-      // fetch(`https://api.github.com/search/users/${clickedProfile}/repos`)
-      //  .then((res) => res.json())
-      //  .then((data) =>console.log(data))
+        fetch(`https://api.github.com/users/${user.login}/repos`,)
+       .then((res) => res.json())
+       .then((data) =>console.log(data))
     }
 
 
