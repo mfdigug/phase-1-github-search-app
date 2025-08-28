@@ -1,5 +1,6 @@
 // variables
 const form = document.querySelector('#github-form')
+const repoDisplay = document.querySelector('#repos-list')
 let userData = []
 
 // STEP 1: Submitted form takes input value and return user matches using the User Search Endpoint.
@@ -48,13 +49,24 @@ function displayUserProfiles(user){
         handleProfileClick(e, user)
     })
 
-    function handleProfileClick(e){
-        fetch(`https://api.github.com/users/${user.login}/repos`,)
+    function handleProfileClick(e, user){
+        fetch(`https://api.github.com/users/${user.login}/repos`)
        .then((res) => res.json())
-       .then((data) =>console.log(data))
+       .then(repos => {
+        //console.log(repos)
+        repos.forEach(repo => displayRepos(repo))
+        })
+
+
+        
     }
 
-
+    function displayRepos(repo) {
+        console.log(repo.full_name)
+        const li = document.createElement('li');
+        li.innerText = `${repo.full_name}`
+        repoDisplay.appendChild(li); 
+    }
         
 }
 
